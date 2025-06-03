@@ -1,1 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap");
+
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Latin Modern Math";
+  src: url("./assets/fonts/latinmodern-math.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme {
+  --font-math: "Latin Modern Math", serif;
+  --font-title: "Reddit Sans", Arial, Helvetica, sans-serif;
+  --animate-infinite-scroll: infinite-scroll linear infinite;
+
+  @keyframes infinite-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(var(--scroll-amount, -50%));
+    }
+  }
+}

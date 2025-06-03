@@ -17,3 +17,6 @@ instance/
 
 # VSCode
 .vscode/
+
+# Xournal Files
+*.xopp

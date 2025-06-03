@@ -10,7 +10,10 @@ type ConnectorProps = {
   containerRef: React.RefObject<HTMLDivElement | null>;
   from?: Side;
   to?: Side;
+  label?: string;
 };
+
+const LABEL_Y_OFFSET = 7;
 
 export default function Connector({
   refA,
@@ -18,6 +21,7 @@ export default function Connector({
   containerRef,
   from,
   to,
+  label,
 }: ConnectorProps) {
   // Initialize state for the lines' coordinates
   const [lineCoords, setLineCoords] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
@@ -62,9 +66,21 @@ export default function Connector({
         y1={lineCoords.y1}
         x2={lineCoords.x2}
         y2={lineCoords.y2}
-        stroke="gray"
+        stroke="black"
         strokeWidth="3"
       />
+
+      {label && (
+        <text
+          x={(lineCoords.x1 + lineCoords.x2) / 2}
+          y={(lineCoords.y1 + lineCoords.y2) / 2 - LABEL_Y_OFFSET}
+          textAnchor="middle"
+          fill="black"
+          className="text-sm select-none"
+        >
+          {label}
+        </text>
+      )}
     </svg>
   );
 }

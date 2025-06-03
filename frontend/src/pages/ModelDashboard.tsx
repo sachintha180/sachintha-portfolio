@@ -1,8 +1,8 @@
 // ModelDashboard.tsx
 
-import CentralCanvas from "./CentralCanvas";
-import SidebarLeft from "./SidebarLeft";
-import SidebarRight from "./SidebarRight";
+import CentralCanvas from "../components/CentralCanvas";
+import SidebarLeft from "../components/SidebarLeft";
+import SidebarRight from "../components/SidebarRight";
 
 export default function ModelDashboard() {
   return (

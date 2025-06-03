@@ -7,6 +7,17 @@ export default function SidebarRight() {
         Hyperparameters
       </h2>
 
+      <label htmlFor="activationFn" className="block text-sm font-medium">
+        Model
+      </label>
+      <select
+        id="activationFn"
+        className="w-full p-2 border-2 border-gray-400 rounded"
+      >
+        <option value="sigmoid">Sigmoid</option>
+        <option value="relu">ReLU</option>
+      </select>
+
       <label htmlFor="learningRate" className="block text-sm font-medium">
         Learning Rate
       </label>
