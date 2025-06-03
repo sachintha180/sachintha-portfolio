@@ -41,7 +41,7 @@ export default function Home() {
       <MouseFollower radius={200} zIndex={30} position={mouse} />
 
       {/* Main Section */}
-      <main className="md:w-1/2 mx-auto h-full font-title p-5 bg-white border-x-3 border-gray-200 z-30 relative flex flex-col">
+      <main className="mx-auto w-full h-full font-title p-5 bg-white border-x-3 border-gray-200 z-30 relative flex flex-col xl:w-1/2">
         {/* Header Row - Fixed at top */}
         <div className="flex-shrink-0">
           <HomeHeader />
@@ -50,7 +50,7 @@ export default function Home() {
         {/* Content Section - Scrollable */}
         <section
           id="content"
-          className="space-y-15 mx-3 p-3 overflow-y-auto flex-grow"
+          className="space-y-15 md:p-3 overflow-y-auto flex-grow xl:mx-3"
         >
           {/* Profile Row */}
           <div className="w-full">

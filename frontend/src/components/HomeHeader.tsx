@@ -1,20 +1,22 @@
 export default function HomeHeader() {
   return (
-    <header className="flex max-h-[200px] rounded-sm w-full mb-10">
+    <header className="flex max-h-[250px] rounded-sm w-full mb-10">
       {/* Gradient Border Container */}
       <div className="bg-gradient-to-r from-gray-800 to-transparent w-full">
         {/* White Background Container */}
-        <div className="flex bg-white mb-[2px] gap-10">
+        <div className="flex bg-white mb-[2px] gap-10 p-5 md:p-0">
           {/* Profile Image */}
           <img
             src="profile_img.png"
             alt="Sachintha Senanayake"
-            className="w-48 h-48 grayscale-100 self-end"
+            className="hidden md:block md:w-48 md:h-48 grayscale-100 self-end"
           />
 
           {/* Name and Title */}
           <div className="self-center flex flex-col gap-2 flex-1">
-            <h1 className="text-5xl text-gray-800">Sachintha Senanayake</h1>
+            <h1 className="text-3xl lg:text-4xl 2xl:text-5xl text-gray-800">
+              Sachintha Senanayake
+            </h1>
             <p className="text-xl text-gray-700">Full Stack & AI Developer</p>
 
             {/* Social Icons */}
@@ -89,7 +91,12 @@ export default function HomeHeader() {
               </a>
 
               {/* Sri Lankan Flag */}
-              <img src="srilankan_flag.jpg" alt="Sri Lankan Flag" className="w-6 h-6 object-cover rounded-full" title="I'm from Sri Lanka!" />
+              <img
+                src="srilankan_flag.jpg"
+                alt="Sri Lankan Flag"
+                className="w-6 h-6 object-cover rounded-full"
+                title="I'm from Sri Lanka!"
+              />
             </div>
           </div>
         </div>

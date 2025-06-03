@@ -8,7 +8,7 @@ export default function ExperimentCard({ experiment }: ExperimentCardProps) {
   return (
     <div className="border-gray-200 border-2 rounded-lg overflow-hidden px-4 py-2 flex items-center gap-2">
       {/* Logo/Icon */}
-      <div className="w-12 h-12 flex items-center justify-center">
+      <div className="w-12 h-12 md:flex items-center justify-center hidden">
         {experiment.logo}
       </div>
 
