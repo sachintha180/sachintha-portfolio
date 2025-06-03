@@ -24,6 +24,7 @@ export default function HomeHeader() {
               {/* LinkedIn */}
               <a
                 href="https://www.linkedin.com/in/sachinthasenanayake180/"
+                target="_blank"
                 className="text-gray-800 hover:text-gray-600 transition-colors"
               >
                 <svg
@@ -40,6 +41,7 @@ export default function HomeHeader() {
               {/* Instagram */}
               <a
                 href="https://www.instagram.com/sachintha18/"
+                target="_blank"
                 className="text-gray-800 hover:text-gray-600 transition-colors"
               >
                 <svg
@@ -77,6 +79,7 @@ export default function HomeHeader() {
               {/* GitHub */}
               <a
                 href="https://github.com/sachintha180"
+                target="_blank"
                 className="text-gray-800 hover:text-gray-600 transition-colors"
               >
                 <svg
