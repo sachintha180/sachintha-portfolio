@@ -1,5 +1,3 @@
-import ProfileImage from "../assets/images/profile_img.png";
-
 export default function HomeHeader() {
   return (
     <header className="flex max-h-[200px] rounded-sm w-full mb-10">
@@ -9,7 +7,7 @@ export default function HomeHeader() {
         <div className="flex bg-white mb-[2px] gap-10">
           {/* Profile Image */}
           <img
-            src={ProfileImage}
+            src="./profile_img.png"
             alt="Sachintha Senanayake"
             className="w-48 h-48 grayscale-100 self-end"
           />
