@@ -23,7 +23,7 @@ export default function Home() {
     <div className="h-screen w-screen font-title relative overflow-hidden">
       {/* Blurred BG */}
       <img
-        src="/background_img.png"
+        src="background_img.png"
         alt="Background Image"
         className="object-cover absolute left-0 w-full h-full z-10 blur-sm"
         draggable={false}
@@ -33,7 +33,7 @@ export default function Home() {
         x={mouse.x}
         y={mouse.y}
         radius={100}
-        src="/background_img.png"
+        src="background_img.png"
         className="object-cover absolute left-0 w-full h-full"
         zIndex={20}
       />
