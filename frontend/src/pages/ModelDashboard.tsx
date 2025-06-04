@@ -6,7 +6,7 @@ import SidebarRight from "../components/SidebarRight";
 
 export default function ModelDashboard() {
   return (
-    <div className="h-screen p-4 bg-gray-50 space-y-4">
+    <div className="h-screen w-screen font-title relative space-y-4 p-4 overflow-hidden font-title">
       <div className="p-2">
         <h1 className="text-3xl font-semibold">Model Playground</h1>
       </div>

@@ -41,7 +41,7 @@ export default function Home() {
       <MouseFollower radius={200} zIndex={30} position={mouse} />
 
       {/* Main Section */}
-      <main className="mx-auto w-full h-full font-title p-5 bg-white border-x-3 border-gray-200 z-30 relative flex flex-col xl:w-1/2">
+      <main className="mx-auto w-full h-full font-title p-5 bg-white border-x-3 border-gray-200 z-30 relative flex flex-col xl:w-3/5">
         {/* Header Row - Fixed at top */}
         <div className="flex-shrink-0">
           <HomeHeader />
