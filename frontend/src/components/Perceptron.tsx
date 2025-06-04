@@ -13,10 +13,7 @@ export default function Perceptron() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div
-      ref={containerRef}
-      className="font-math relative flex-1 rounded-md border-2 border-gray-200"
-    >
+    <div ref={containerRef} className="font-math relative flex-1">
       <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-16">
         {/* Input */}
         <div ref={inputRef} className="p-2">
