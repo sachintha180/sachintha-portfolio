@@ -21,23 +21,23 @@ export default function Home() {
 
   return (
     <div className="font-title relative h-screen w-screen overflow-hidden">
-      {/* Blurred BG */}
+      {/* Blurred BG - Only visible on xl screens and above */}
       <img
         src="background_img.png"
         alt="Background Image"
-        className="absolute left-0 z-10 h-full w-full object-cover blur-sm"
+        className="absolute left-0 z-10 hidden h-full w-full object-cover blur-sm xl:block"
         draggable={false}
       />
-      {/* Magnifier (sharp) */}
+      {/* Magnifier (sharp) - Only visible on xl screens and above */}
       <MagnifierWindow
         x={mouse.x}
         y={mouse.y}
         radius={100}
         src="background_img.png"
-        className="absolute left-0 h-full w-full object-cover"
+        className="absolute left-0 hidden h-full w-full object-cover xl:block"
         zIndex={20}
       />
-      {/* Magnifier "Glass" */}
+      {/* Magnifier "Glass" - Only visible on xl screens and above */}
       <MouseFollower radius={200} zIndex={30} position={mouse} />
 
       {/* Main Section */}
