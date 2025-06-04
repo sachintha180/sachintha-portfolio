@@ -6,9 +6,9 @@ interface ExperimentCardProps {
 
 export default function ExperimentCard({ experiment }: ExperimentCardProps) {
   return (
-    <div className="border-gray-200 border-2 rounded-lg overflow-hidden px-4 py-2 flex items-center gap-2">
+    <div className="flex items-center gap-2 overflow-hidden rounded-lg border-2 border-gray-200 px-4 py-2">
       {/* Logo/Icon */}
-      <div className="w-12 h-12 md:flex items-center justify-center hidden">
+      <div className="hidden h-12 w-12 items-center justify-center md:flex">
         {experiment.logo}
       </div>
 
@@ -22,10 +22,10 @@ export default function ExperimentCard({ experiment }: ExperimentCardProps) {
         href={experiment.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center transition-colors duration-300 ml-auto"
+        className="ml-auto inline-flex items-center font-medium text-blue-600 transition-colors duration-300 hover:text-blue-800"
       >
         <svg
-          className="w-6 h-6"
+          className="h-6 w-6"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

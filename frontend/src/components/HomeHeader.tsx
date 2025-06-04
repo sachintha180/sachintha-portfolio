@@ -1,31 +1,31 @@
 export default function HomeHeader() {
   return (
-    <header className="flex max-h-[250px] rounded-sm w-full mb-10">
+    <header className="mb-10 flex max-h-[250px] w-full rounded-sm">
       {/* Gradient Border Container */}
-      <div className="bg-gradient-to-r from-gray-800 to-transparent w-full">
+      <div className="w-full bg-gradient-to-r from-gray-800 to-transparent">
         {/* White Background Container */}
-        <div className="flex bg-white mb-[2px] gap-10 p-5 md:p-0">
+        <div className="mb-[2px] flex gap-10 bg-white p-5 md:p-0">
           {/* Profile Image */}
           <img
             src="profile_img.png"
             alt="Sachintha Senanayake"
-            className="hidden md:block md:w-48 md:h-48 grayscale-100 self-end"
+            className="hidden self-end grayscale-100 md:block md:h-48 md:w-48"
           />
 
           {/* Name and Title */}
-          <div className="self-center flex flex-col gap-2 flex-1">
-            <h1 className="text-3xl lg:text-4xl 2xl:text-5xl text-gray-800">
+          <div className="flex flex-1 flex-col gap-2 self-center">
+            <h1 className="text-3xl text-gray-800 lg:text-4xl 2xl:text-5xl">
               Sachintha Senanayake
             </h1>
             <p className="text-xl text-gray-700">Full Stack & AI Developer</p>
 
             {/* Social Icons */}
-            <div className="flex gap-4 items-center mt-2">
+            <div className="mt-2 flex items-center gap-4">
               {/* LinkedIn */}
               <a
                 href="https://www.linkedin.com/in/sachinthasenanayake180/"
                 target="_blank"
-                className="text-gray-800 hover:text-gray-600 transition-colors"
+                className="text-gray-800 transition-colors hover:text-gray-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ export default function HomeHeader() {
               <a
                 href="https://www.instagram.com/sachintha18/"
                 target="_blank"
-                className="text-gray-800 hover:text-gray-600 transition-colors"
+                className="text-gray-800 transition-colors hover:text-gray-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ export default function HomeHeader() {
               {/* Email */}
               <a
                 href="mailto:sachinthasenanayake180@gmail.com"
-                className="text-gray-800 hover:text-gray-600 transition-colors"
+                className="text-gray-800 transition-colors hover:text-gray-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@ export default function HomeHeader() {
               <a
                 href="https://github.com/sachintha180"
                 target="_blank"
-                className="text-gray-800 hover:text-gray-600 transition-colors"
+                className="text-gray-800 transition-colors hover:text-gray-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ export default function HomeHeader() {
               <img
                 src="srilankan_flag.jpg"
                 alt="Sri Lankan Flag"
-                className="w-6 h-6 object-cover rounded-full"
+                className="h-6 w-6 rounded-full object-cover"
                 title="I'm from Sri Lanka!"
               />
             </div>

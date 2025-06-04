@@ -20,12 +20,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="h-screen w-screen font-title relative overflow-hidden">
+    <div className="font-title relative h-screen w-screen overflow-hidden">
       {/* Blurred BG */}
       <img
         src="background_img.png"
         alt="Background Image"
-        className="object-cover absolute left-0 w-full h-full z-10 blur-sm"
+        className="absolute left-0 z-10 h-full w-full object-cover blur-sm"
         draggable={false}
       />
       {/* Magnifier (sharp) */}
@@ -34,14 +34,14 @@ export default function Home() {
         y={mouse.y}
         radius={100}
         src="background_img.png"
-        className="object-cover absolute left-0 w-full h-full"
+        className="absolute left-0 h-full w-full object-cover"
         zIndex={20}
       />
       {/* Magnifier "Glass" */}
       <MouseFollower radius={200} zIndex={30} position={mouse} />
 
       {/* Main Section */}
-      <main className="mx-auto w-full h-full font-title p-5 bg-white border-x-3 border-gray-200 z-30 relative flex flex-col xl:w-3/5">
+      <main className="relative z-30 mx-auto flex h-full w-full flex-col border-x-3 border-gray-200 bg-white p-5 xl:w-3/5">
         {/* Header Row - Fixed at top */}
         <div className="flex-shrink-0">
           <HomeHeader />
@@ -50,13 +50,13 @@ export default function Home() {
         {/* Content Section - Scrollable */}
         <section
           id="content"
-          className="space-y-15 md:p-3 overflow-y-auto flex-grow xl:mx-3"
+          className="flex-grow space-y-15 overflow-y-auto md:p-3 xl:mx-3"
         >
           {/* Profile Row */}
           <div className="w-full">
-            <h2 className="text-3xl text-gray-800 mb-4">Profile</h2>
-            <div className="bg-white px-4 border-l-4 border-gray-800 space-y-5">
-              <p className="text-gray-700 leading-relaxed font-bold">
+            <h2 className="mb-4 text-3xl text-gray-800">Profile</h2>
+            <div className="space-y-5 border-l-4 border-gray-800 bg-white px-4">
+              <p className="leading-relaxed font-bold text-gray-700">
                 Versatile Full Stack developer with extensive experience
                 building end-to-end applications, skilled in Python Flask for
                 robust backend solutions, and a keen eye for modern, intuitive
@@ -74,7 +74,7 @@ export default function Home() {
 
           {/* Skills Row */}
           <div className="w-full">
-            <h2 className="text-3xl text-gray-800 mb-6">
+            <h2 className="mb-6 text-3xl text-gray-800">
               Skills & Technologies
             </h2>
 
@@ -84,10 +84,10 @@ export default function Home() {
 
           {/* Projects Row */}
           <div className="w-full">
-            <h2 className="text-3xl text-gray-800 mb-6">Projects</h2>
+            <h2 className="mb-6 text-3xl text-gray-800">Projects</h2>
 
             {/* Projects Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {projects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
@@ -96,7 +96,7 @@ export default function Home() {
 
           {/* Experiments Row */}
           <div className="w-full">
-            <h2 className="text-3xl text-gray-800 mb-6">Experiments</h2>
+            <h2 className="mb-6 text-3xl text-gray-800">Experiments</h2>
 
             {/* Experiments List */}
             <div className="flex flex-col gap-3">

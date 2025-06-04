@@ -15,26 +15,26 @@ export default function Perceptron() {
   return (
     <div
       ref={containerRef}
-      className="flex-1 relative border-2 border-gray-200 rounded-md font-math"
+      className="font-math relative flex-1 rounded-md border-2 border-gray-200"
     >
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-16">
+      <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-16">
         {/* Input */}
         <div ref={inputRef} className="p-2">
           <p>x</p>
         </div>
 
         {/* Perceptron */}
-        <div className="bg-red-200 rounded-full border-2 border-red-300 w-40 h-40 flex flex-col items-center justify-center">
+        <div className="flex h-40 w-40 flex-col items-center justify-center rounded-full border-2 border-red-300 bg-red-200">
           {/* Bias */}
           <div ref={biasRef} className="p-2 text-sm">
             <p>b</p>
           </div>
 
-          <div className="flex items-center justify-between gap-4 w-full p-4">
+          <div className="flex w-full items-center justify-between gap-4 p-4">
             {/* Weighted Sum */}
             <div
               ref={sumRef}
-              className="w-10 h-10 flex items-center justify-center bg-red-300 border-2 border-red-400 rounded-full"
+              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-red-400 bg-red-300"
             >
               <p>&Sigma;</p>
             </div>
@@ -42,7 +42,7 @@ export default function Perceptron() {
             {/* Activation Function */}
             <div
               ref={activationRef}
-              className="w-10 h-10 flex items-center justify-center bg-red-300 border-2 border-red-400 rounded-full"
+              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-red-400 bg-red-300"
             >
               <p>&phi;</p>
             </div>
@@ -50,7 +50,6 @@ export default function Perceptron() {
         </div>
 
         {/* Output */}
-        {/* Input */}
         <div ref={outputRef} className="p-2">
           <p>y</p>
         </div>

@@ -23,9 +23,9 @@ export default function SkillCarousel() {
   }, []);
 
   return (
-    <div className="px-4 overflow-hidden whitespace-nowrap w-full relative">
+    <div className="relative w-full overflow-hidden px-4 whitespace-nowrap">
       <div
-        className="flex w-max animate-infinite-scroll gap-4"
+        className="animate-infinite-scroll flex w-max gap-4"
         style={
           {
             "--scroll-amount": `-${batchesWidth + 16}px`,
