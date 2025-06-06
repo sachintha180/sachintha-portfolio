@@ -11,6 +11,7 @@ type ConnectorProps = {
   from?: Side;
   to?: Side;
   label?: string;
+  fontSize: number;
 };
 
 const LABEL_Y_OFFSET = 7;
@@ -22,6 +23,7 @@ export default function Connector({
   from,
   to,
   label,
+  fontSize,
 }: ConnectorProps) {
   // Initialize state for the lines' coordinates
   const [lineCoords, setLineCoords] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
@@ -60,7 +62,19 @@ export default function Connector({
 
   // Draw SVG line connecting the two refs together
   return (
-    <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+    <svg className="pointer-events-none absolute top-0 left-0 h-full w-full">
+      <defs>
+        <marker
+          id="arrowhead"
+          markerWidth="5"
+          markerHeight="4"
+          refX="3.5"
+          refY="2"
+          orient="auto-start-reverse"
+        >
+          <polygon points="0 0, 5 2, 0 4" fill="black" />
+        </marker>
+      </defs>
       <line
         x1={lineCoords.x1}
         y1={lineCoords.y1}
@@ -68,6 +82,7 @@ export default function Connector({
         y2={lineCoords.y2}
         stroke="black"
         strokeWidth="3"
+        marker-end="url(#arrowhead)"
       />
 
       {label && (
@@ -76,7 +91,8 @@ export default function Connector({
           y={(lineCoords.y1 + lineCoords.y2) / 2 - LABEL_Y_OFFSET}
           textAnchor="middle"
           fill="black"
-          className="text-sm select-none"
+          fontSize={fontSize}
+          className="select-none"
         >
           {label}
         </text>

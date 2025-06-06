@@ -4,7 +4,7 @@ import { models } from "../lib/model";
 import ModelForm from "../components/modelDashboard/ModelForm";
 
 export default function ModelDashboard() {
-  const [currentModel, setCurrentModel] = useState<string>("");
+  const [currentModel, setCurrentModel] = useState<string>("perceptron");
 
   return (
     <div className="font-title relative flex h-screen w-screen flex-col overflow-hidden p-5">
