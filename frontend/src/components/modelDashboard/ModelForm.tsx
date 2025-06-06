@@ -21,6 +21,9 @@ export default function ModelForm({
 
   // Initialize form variables to initial values
   const [form, setForm] = useState(initialValues);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [generatedData, setGeneratedData] = useState<{ X: number[][], y: number[] } | null>(null);
 
   // Event handler to handle input change
   const handleChange = (
@@ -31,6 +34,53 @@ export default function ModelForm({
       ...f,
       [name]: type === "number" ? +value : value,
     }));
+  };
+
+  // Event handler for submitting the form to generate dataset
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    setGeneratedData(null);
+
+    const payload = {
+      dataset: form.dataset, // 'dataset' key from initialization in model.tsx
+      n: Number(form.numberOfPoints), // 'numberOfPoints' key
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || `HTTP error! status: ${response.status}`);
+      }
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      
+      setGeneratedData({ X: result.X, y: result.y });
+      console.log("Generated data:", { X: result.X, y: result.y });
+
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+        console.error("Failed to generate dataset:", err.message);
+      } else {
+        setError("An unknown error occurred.");
+        console.error("Failed to generate dataset: An unknown error occurred.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -103,9 +153,22 @@ export default function ModelForm({
           return null;
         })}
 
-        <button className="mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700">
-          Generate Dataset
+        <button
+          onClick={handleSubmit}
+          disabled={isLoading}
+          className="mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+        >
+          {isLoading ? "Generating..." : "Generate Dataset"}
         </button>
+        {error && <p className="mt-2 text-sm text-red-600">Error: {error}</p>}
+        {generatedData && (
+          <div className="mt-4">
+            <h3 className="text-md font-semibold">Generated Data:</h3>
+            <pre className="mt-1 max-h-40 overflow-auto rounded bg-gray-100 p-2 text-xs">
+              {JSON.stringify(generatedData, null, 2)}
+            </pre>
+          </div>
+        )}
       </div>
 
       {/* Hyperparameters Controls */}

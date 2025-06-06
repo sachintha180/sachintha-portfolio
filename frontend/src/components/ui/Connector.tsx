@@ -82,7 +82,7 @@ export default function Connector({
         y2={lineCoords.y2}
         stroke="black"
         strokeWidth="3"
-        marker-end="url(#arrowhead)"
+        markerEnd="url(#arrowhead)"
       />
 
       {label && (

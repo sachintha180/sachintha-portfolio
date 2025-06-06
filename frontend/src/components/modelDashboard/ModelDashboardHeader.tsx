@@ -1,4 +1,4 @@
-import { FaPlay, FaStepForward, FaUndo } from "react-icons/fa";
+import { FaPlay, FaQuestion, FaStepForward, FaUndo } from "react-icons/fa";
 
 export default function ModelDashboardHeader() {
   return (
@@ -30,6 +30,10 @@ export default function ModelDashboardHeader() {
             <button className="flex h-20 min-w-20 flex-col items-center justify-center gap-2 rounded-md bg-red-600 pt-1 text-white hover:bg-red-700">
               <FaUndo size={20} />
               <span className="text-sm">Reset</span>
+            </button>
+            <button className="flex h-20 min-w-20 flex-col items-center justify-center gap-2 rounded-md bg-blue-600 pt-1 text-white hover:bg-blue-700">
+              <FaQuestion size={20} />
+              <span className="text-sm">Query</span>
             </button>
           </div>
         </div>

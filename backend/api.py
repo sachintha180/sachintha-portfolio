@@ -4,8 +4,8 @@ import logging
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from backend.data_generator import AndGenerator
-from backend.validation import validate_generate_request
+from data_generator import AndGenerator
+from validation import validate_generate_request
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -34,21 +34,20 @@ def generate():
     is_valid, validated_data, error_response = validate_generate_request(
         request_data, app.logger
     )
-
-    assert error_response is not None
     if not is_valid:
-        # error_response already contains (jsonify_object, status_code)
-        # Logging is handled within validate_generate_request
+        assert (
+            error_response is not None
+        ), "If validation fails, error_response must be provided."
         return error_response
 
     # If is_valid is True, validated_data is guaranteed to be a dict.
     assert validated_data is not None
-    dataset_type = validated_data["type"]
+    dataset = validated_data["dataset"]
     n_value = validated_data["n"]
 
     # Generate dataset based on dataset type
     X, y = None, None
-    if dataset_type == "and":
+    if dataset == "and":
         try:
             generator = AndGenerator(n_value)
             X, y = generator.generate()
@@ -70,15 +69,13 @@ def generate():
                 500,
             )
     else:
-        # This case should ideally be caught by validation if 'type' is restricted
-        # However, keeping it here as a fallback or for future types.
-        app.logger.error("Invalid 'type' attribute: %s", dataset_type)
+        app.logger.error("Invalid 'type' attribute: %s", dataset)
         return (
             jsonify(
                 {
                     "X": None,
                     "y": None,
-                    "error": f"Invalid 'type' attribute: {dataset_type}",
+                    "error": f"Invalid 'type' attribute: {dataset}",
                 }
             ),
             400,

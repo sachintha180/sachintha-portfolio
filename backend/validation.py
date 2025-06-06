@@ -26,16 +26,18 @@ def validate_generate_request(request_data, logger):
             ),
         )
 
-    dataset_type = request_data.get("type")
+    dataset = request_data.get("dataset")
     n_value = request_data.get("n")
 
-    if not dataset_type:
-        logger.error("'type' attribute missing in request")
+    if not dataset:
+        logger.error("'dataset' attribute missing in request")
         return (
             False,
             None,
             (
-                jsonify({"X": None, "y": None, "error": "'type' attribute is missing"}),
+                jsonify(
+                    {"X": None, "y": None, "error": "'dataset' attribute is missing"}
+                ),
                 400,
             ),
         )
@@ -61,4 +63,4 @@ def validate_generate_request(request_data, logger):
             ),
         )
 
-    return True, {"type": dataset_type, "n": n_value}, None
+    return True, {"dataset": dataset, "n": n_value}, None
