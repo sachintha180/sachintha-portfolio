@@ -35,11 +35,26 @@ export type ModelOptionGroup = {
 
 type ModelDefinition = {
   label: string;
-  component: React.ReactNode;
   initialization: ModelOptionGroup;
   hyperparameters: ModelOptionGroup;
 };
 
 export type ModelDictionary = {
   [modelName: string]: ModelDefinition;
+};
+
+export type ScatterPoint = {
+  x1: number;
+  x2: number;
+  label?: number;
+};
+
+export type LossPoint = {
+  epoch: number;
+  loss: number;
+};
+
+export type Dataset = {
+  X: number[][];
+  y: number[];
 };

@@ -2,6 +2,8 @@
 
 from flask import jsonify
 
+MAX_N_VALUE = 500
+
 
 def validate_generate_request(request_data, logger):
     """
@@ -58,6 +60,23 @@ def validate_generate_request(request_data, logger):
             (
                 jsonify(
                     {"X": None, "y": None, "error": "'n' must be a positive integer"}
+                ),
+                400,
+            ),
+        )
+
+    if n_value > MAX_N_VALUE:
+        logger.error("Invalid 'n' attribute: %s", n_value)
+        return (
+            False,
+            None,
+            (
+                jsonify(
+                    {
+                        "X": None,
+                        "y": None,
+                        "error": f"'n' must be less than {MAX_N_VALUE}",
+                    }
                 ),
                 400,
             ),

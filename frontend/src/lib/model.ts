@@ -1,10 +1,8 @@
-import Perceptron from "../components/models/Perceptron";
 import type { ModelDictionary } from "../types/Model";
 
 export const models: ModelDictionary = {
   perceptron: {
     label: "Perceptron",
-    component: <Perceptron />,
     initialization: {
       dataset: {
         label: "Dataset",
@@ -25,7 +23,7 @@ export const models: ModelDictionary = {
       },
     },
     hyperparameters: {
-      activationFn: {
+      activationFunction: {
         label: "Activation Function",
         type: "select",
         options: [

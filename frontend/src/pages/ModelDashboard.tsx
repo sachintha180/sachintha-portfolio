@@ -2,9 +2,30 @@ import { useState } from "react";
 import ModelDashboardHeader from "../components/modelDashboard/ModelDashboardHeader";
 import { models } from "../lib/model";
 import ModelForm from "../components/modelDashboard/ModelForm";
+import ScatterPlot from "../components/ui/ScatterPlot";
+import LossLinePlot from "../components/ui/LossLinePlot";
+import { type Dataset } from "../types/Model";
+import Perceptron from "../components/models/Perceptron";
 
 export default function ModelDashboard() {
-  const [currentModel, setCurrentModel] = useState<string>("perceptron");
+  // Initialize state for currently selected model and dataset
+  const [currentModel, setCurrentModel] = useState<string>(
+    Object.keys(models)[0],
+  );
+  const [currentDataset, setCurrentDataset] = useState<Dataset | null>(null);
+
+  // Unwrap initialization and hyperparameters into dictionary
+  const initialValues: Record<string, string | number> = {};
+  Object.entries({
+    ...models[currentModel].initialization,
+    ...models[currentModel].hyperparameters,
+  }).forEach(([key, field]) => {
+    initialValues[key] = field.default ?? "";
+  });
+  console.log(initialValues);
+
+  // Initialize state for all form variables
+  const [form, setForm] = useState(initialValues);
 
   return (
     <div className="font-title relative flex h-screen w-screen flex-col overflow-hidden p-5">
@@ -32,9 +53,6 @@ export default function ModelDashboard() {
               defaultValue={currentModel}
               onChange={(e) => setCurrentModel(e.currentTarget.value)}
             >
-              <option value="" disabled>
-                Please select a model
-              </option>
               {Object.entries(models).map(([modelKey, modelDefinition]) => (
                 <option key={modelKey} value={modelKey}>
                   {modelDefinition.label}
@@ -48,9 +66,11 @@ export default function ModelDashboard() {
             {/* Left Column: Model Visualization and Plots */}
             <div className="flex flex-1 flex-col gap-3">
               {/* Upper part: Model Visualization */}
-              <div className="flex min-h-0 flex-2/3">
-                {currentModel ? (
-                  models[currentModel].component
+              <div className="flex min-h-0 flex-1">
+                {currentModel === "perceptron" ? (
+                  <Perceptron
+                    activationFunction={form["activationFunction"] as string}
+                  />
                 ) : (
                   <div className="flex flex-1 items-center justify-center">
                     <p className="text-xl text-gray-400">
@@ -61,21 +81,40 @@ export default function ModelDashboard() {
               </div>
 
               {/* Lower part: Row for the three plots */}
-              <div className="flex flex-1/3 flex-shrink-0 gap-3">
+              <div className="flex h-[250px] flex-shrink-0 gap-3">
                 {/* Dataset Plot */}
                 <div className="flex flex-1 flex-shrink-0 flex-col rounded-md bg-gray-100">
                   <h3 className="w-full rounded-t-md bg-green-300 px-2 py-1 text-sm font-semibold">
                     Dataset Plot
                   </h3>
-                  <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-green-100 p-2 text-xs text-gray-600"></div>
-                </div>
-
-                {/* Gradient Descent */}
-                <div className="flex flex-1 flex-shrink-0 flex-col rounded-md bg-gray-100">
-                  <h3 className="w-full rounded-t-md bg-amber-300 px-2 py-1 text-sm font-semibold">
-                    Gradient Descent
-                  </h3>
-                  <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-amber-100 p-2 text-xs text-gray-600"></div>
+                  <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-green-100 p-2 text-xs text-gray-600">
+                    {currentDataset ? (
+                      <ScatterPlot
+                        data={
+                          currentDataset
+                            ? currentDataset.X.map((x, i) => {
+                                return {
+                                  x1: x[0],
+                                  x2: x[1],
+                                  label: currentDataset.y[i],
+                                };
+                              })
+                            : []
+                        }
+                        height={200}
+                        width={400}
+                        padding={0.1}
+                        margin={{
+                          left: 45,
+                          bottom: 35,
+                        }}
+                      />
+                    ) : (
+                      <p className="text-[10pt] text-green-500">
+                        Waiting for dataset to be generated.
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 {/* Loss Curve */}
@@ -83,7 +122,32 @@ export default function ModelDashboard() {
                   <h3 className="w-full rounded-t-md bg-red-300 px-2 py-1 text-sm font-semibold">
                     Loss Curve
                   </h3>
-                  <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-red-100 p-2 text-xs text-gray-600"></div>
+                  <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-red-100 p-2 text-xs text-gray-600">
+                    {currentDataset ? (
+                      <LossLinePlot
+                        data={Array.from(
+                          { length: form["epochs"] as number },
+                          (_, i) => {
+                            return {
+                              epoch: i,
+                              loss: Math.exp(-i + 2),
+                            };
+                          },
+                        )}
+                        height={200}
+                        width={400}
+                        margin={{
+                          left: 45,
+                          bottom: 35,
+                        }}
+                        padding={0.2}
+                      />
+                    ) : (
+                      <p className="text-[10pt] text-red-500">
+                        Waiting for dataset to be generated.
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -104,6 +168,9 @@ export default function ModelDashboard() {
             <ModelForm
               initialization={models[currentModel].initialization}
               hyperparameters={models[currentModel].hyperparameters}
+              form={form}
+              setForm={setForm}
+              setCurrentDataset={setCurrentDataset}
             />
           ) : (
             <div className="flex flex-1 items-center justify-center">

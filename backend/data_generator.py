@@ -3,6 +3,7 @@ import numpy as np
 
 class AndGenerator:
     """Generates data for an AND logical gate."""
+
     def __init__(self, n: int, jitter_std=0.08, random_seed=0):
         """Initializes the AND data generator."""
         self.n = n
@@ -11,10 +12,10 @@ class AndGenerator:
 
     def generate(self):
         """Generates X (inputs) and y (outputs) for the AND gate."""
-        # Establish a deterministic random seet
-        np.random.seed(self.random_seed)
+        # Establish a deterministic random seed
+        # np.random.seed(self.random_seed)
 
-        # Generate n random (x1,x2) pairs where both are 0 or 1
+        # Generate n random (x1, x2) pairs where both are 0 or 1
         X = np.random.randint(0, 2, size=(self.n, 2))
 
         # Compute output pairs (via bitwise AND)

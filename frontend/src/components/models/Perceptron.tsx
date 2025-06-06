@@ -1,5 +1,10 @@
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import Connector from "../ui/Connector";
+
+// Perceptron props
+type PerceptronProps = {
+  activationFunction: string;
+};
 
 // Configuration for Perceptron component styling
 const perceptronConfig = {
@@ -7,7 +12,7 @@ const perceptronConfig = {
   neuronPadding: 50,
 };
 
-export default function Perceptron() {
+export default function Perceptron({ activationFunction }: PerceptronProps) {
   // Initialize refs to model components
   const inputRef = useRef<HTMLDivElement>(null);
   const biasRef = useRef<HTMLDivElement>(null);
@@ -17,6 +22,12 @@ export default function Perceptron() {
 
   // Initialize ref to main container (for connectors)
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Initialize maps of symbols for possible activation functions
+  const activationFunctionMap: Record<string, ReactNode> = {
+    sigmoid: <span>&sigma;</span>,
+    relu: <span>ReLU</span>,
+  };
 
   return (
     <div ref={containerRef} className="font-math relative flex-1">
@@ -34,7 +45,7 @@ export default function Perceptron() {
 
         {/* Perceptron */}
         <div
-          className="flex flex-col items-center justify-center rounded-full border-2 border-red-300 bg-red-200"
+          className="flex flex-col items-center justify-center rounded-full border-2 border-blue-300 bg-blue-200"
           style={{
             height: perceptronConfig.neuronSize,
             width: perceptronConfig.neuronSize,
@@ -55,7 +66,7 @@ export default function Perceptron() {
             {/* Weighted Sum */}
             <div
               ref={sumRef}
-              className="flex items-center justify-center rounded-full border-2 border-red-400 bg-red-300"
+              className="flex items-center justify-center rounded-full border-2 border-blue-400 bg-blue-300"
               style={{
                 height:
                   perceptronConfig.neuronSize / 2 -
@@ -77,7 +88,7 @@ export default function Perceptron() {
             {/* Activation Function */}
             <div
               ref={activationRef}
-              className="flex items-center justify-center rounded-full border-2 border-red-400 bg-red-300"
+              className="flex items-center justify-center rounded-full border-2 border-blue-400 bg-blue-300"
               style={{
                 height:
                   perceptronConfig.neuronSize / 2 -
@@ -92,7 +103,7 @@ export default function Perceptron() {
                   fontSize: perceptronConfig.neuronPadding / 3,
                 }}
               >
-                &phi;
+                {activationFunctionMap[activationFunction]}
               </p>
             </div>
           </div>

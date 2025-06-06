@@ -1,29 +1,29 @@
 import React, { useState } from "react";
-import type { ModelOptionGroup } from "../../types/Model";
+import type { Dataset, ModelOptionGroup } from "../../types/Model";
+import { useToast } from "../../contexts/ToastContext";
 
 type ModelFormProps = {
   initialization: ModelOptionGroup;
   hyperparameters: ModelOptionGroup;
+  form: Record<string, string | number>;
+  setForm: React.Dispatch<
+    React.SetStateAction<Record<string, string | number>>
+  >;
+  setCurrentDataset: React.Dispatch<React.SetStateAction<Dataset | null>>;
 };
 
 export default function ModelForm({
   initialization,
   hyperparameters,
+  form,
+  setForm,
+  setCurrentDataset,
 }: ModelFormProps) {
-  // Unwrap initialization and hyperparameters into dictionary
-  const initialValues: Record<string, string | number> = {};
-  Object.entries({
-    ...initialization,
-    ...hyperparameters,
-  }).forEach(([key, field]) => {
-    initialValues[key] = field.default ?? "";
-  });
-
-  // Initialize form variables to initial values
-  const [form, setForm] = useState(initialValues);
+  // Initialize loading state variable
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [generatedData, setGeneratedData] = useState<{ X: number[][], y: number[] } | null>(null);
+
+  // Initialize context variables for Toast
+  const { showToast } = useToast();
 
   // Event handler to handle input change
   const handleChange = (
@@ -40,8 +40,7 @@ export default function ModelForm({
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
-    setGeneratedData(null);
+    setCurrentDataset(null);
 
     const payload = {
       dataset: form.dataset, // 'dataset' key from initialization in model.tsx
@@ -60,22 +59,31 @@ export default function ModelForm({
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || `HTTP error! status: ${response.status}`);
+        throw new Error(
+          result.error || `HTTP error! status: ${response.status}`,
+        );
       }
-
       if (result.error) {
         throw new Error(result.error);
       }
-      
-      setGeneratedData({ X: result.X, y: result.y });
-      console.log("Generated data:", { X: result.X, y: result.y });
 
+      showToast({
+        type: "success",
+        message: "Dataset generated successfully",
+      });
+      setCurrentDataset({ X: result.X, y: result.y });
     } catch (err) {
       if (err instanceof Error) {
-        setError(err.message);
         console.error("Failed to generate dataset:", err.message);
+        showToast({
+          type: "error",
+          message: err.message,
+        });
       } else {
-        setError("An unknown error occurred.");
+        showToast({
+          type: "error",
+          message: "Failed to generate dataset: An unknown error occurred.",
+        });
         console.error("Failed to generate dataset: An unknown error occurred.");
       }
     } finally {
@@ -160,15 +168,6 @@ export default function ModelForm({
         >
           {isLoading ? "Generating..." : "Generate Dataset"}
         </button>
-        {error && <p className="mt-2 text-sm text-red-600">Error: {error}</p>}
-        {generatedData && (
-          <div className="mt-4">
-            <h3 className="text-md font-semibold">Generated Data:</h3>
-            <pre className="mt-1 max-h-40 overflow-auto rounded bg-gray-100 p-2 text-xs">
-              {JSON.stringify(generatedData, null, 2)}
-            </pre>
-          </div>
-        )}
       </div>
 
       {/* Hyperparameters Controls */}
