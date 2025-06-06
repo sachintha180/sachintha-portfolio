@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import Connector from "./ui/Connector";
+import Connector from "../ui/Connector";
 
 export default function Perceptron() {
   // Initialize refs to model components

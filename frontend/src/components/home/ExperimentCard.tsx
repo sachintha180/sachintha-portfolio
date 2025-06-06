@@ -1,4 +1,4 @@
-import type { Experiment } from "../types/Experiment";
+import type { Experiment } from "../../types/Experiment";
 
 interface ExperimentCardProps {
   experiment: Experiment;

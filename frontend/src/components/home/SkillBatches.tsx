@@ -1,4 +1,4 @@
-import { allSkills } from "../lib/skills";
+import { allSkills } from "../../lib/skills";
 
 type SkillBatchesProps = {
   batchesRef?: React.Ref<HTMLDivElement>;

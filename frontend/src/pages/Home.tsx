@@ -1,12 +1,12 @@
-import HomeHeader from "../components/HomeHeader";
-import SkillCarousel from "../components/SkillCarousel";
+import HomeHeader from "../components/home/HomeHeader";
+import SkillCarousel from "../components/home/SkillCarousel";
 import MouseFollower from "../components/ui/MouseFollower";
 import { useEffect, useState } from "react";
 import MagnifierWindow from "../components/ui/MagnifierWindow";
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard from "../components/home/ProjectCard";
 import { projects } from "../lib/projects";
 import { experiments } from "../lib/experiments";
-import ExperimentCard from "../components/ExperimentCard";
+import ExperimentCard from "../components/home/ExperimentCard";
 
 export default function Home() {
   const [mouse, setMouse] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
