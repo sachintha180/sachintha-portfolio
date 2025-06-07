@@ -1,20 +1,19 @@
-// Connector.tsx
-
-import React, { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState, type RefObject } from "react";
 import type { Side } from "../../types/Connector";
 import { getCoords } from "../../lib/utils";
 
 type ConnectorProps = {
-  refA: React.RefObject<HTMLDivElement | null>;
-  refB: React.RefObject<HTMLDivElement | null>;
-  containerRef: React.RefObject<HTMLDivElement | null>;
+  refA: RefObject<HTMLDivElement | null>;
+  refB: RefObject<HTMLDivElement | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
   from?: Side;
   to?: Side;
   label?: string;
   fontSize: number;
+  inputCount?: number; // Used to trigger re-rendering for input connectors
 };
 
-const LABEL_Y_OFFSET = 7;
+const LABEL_Y_OFFSET = 10;
 
 export default function Connector({
   refA,
@@ -24,6 +23,7 @@ export default function Connector({
   to,
   label,
   fontSize,
+  inputCount,
 }: ConnectorProps) {
   // Initialize state for the lines' coordinates
   const [lineCoords, setLineCoords] = useState({ x1: 0, y1: 0, x2: 0, y2: 0 });
@@ -47,18 +47,67 @@ export default function Connector({
         });
       }
     };
-    updateLine();
 
     // Using requestAnimationFrame to wait until after first paint
     const raf = requestAnimationFrame(updateLine);
 
-    // Add a "resize" event listener after first paint
+    // Add resize listener
     window.addEventListener("resize", updateLine);
+
+    // Add scroll listener
+    // useCapture = true for bubbling elements
+    window.addEventListener("scroll", updateLine, true);
+
+    // Add resize observer
+    const observer = new ResizeObserver(updateLine);
+    if (containerRef.current) observer.observe(containerRef.current);
+
+    // Cleanup
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", updateLine);
+      window.removeEventListener("scroll", updateLine);
+      observer.disconnect();
     };
-  }, [refA, refB, containerRef, from, to]);
+
+    //
+  }, [refA, refB, containerRef, from, to, inputCount]);
+
+  // Pre-render text element (with optional numeric subscript)
+  const TextElement = () => {
+    const match = label?.match(/^(\D+)(\d+)$/);
+    if (match) {
+      const [, base, subscript] = match;
+      return (
+        <text
+          x={(lineCoords.x1 + lineCoords.x2) / 2}
+          y={(lineCoords.y1 + lineCoords.y2) / 2 - LABEL_Y_OFFSET}
+          textAnchor="middle"
+          fill="black"
+          fontSize={fontSize}
+          className="select-none"
+        >
+          <tspan>{base}</tspan>
+          <tspan dy="0.4em" fontSize={fontSize * 0.7}>
+            {subscript}
+          </tspan>
+        </text>
+      );
+    }
+
+    return (
+      <text
+        x={(lineCoords.x1 + lineCoords.x2) / 2}
+        y={(lineCoords.y1 + lineCoords.y2) / 2 - LABEL_Y_OFFSET}
+        textAnchor="middle"
+        fill="black"
+        fontSize={fontSize}
+        className="select-none"
+      >
+        {label}
+      </text>
+    );
+  };
 
   // Draw SVG line connecting the two refs together
   return (
@@ -84,19 +133,7 @@ export default function Connector({
         strokeWidth="3"
         markerEnd="url(#arrowhead)"
       />
-
-      {label && (
-        <text
-          x={(lineCoords.x1 + lineCoords.x2) / 2}
-          y={(lineCoords.y1 + lineCoords.y2) / 2 - LABEL_Y_OFFSET}
-          textAnchor="middle"
-          fill="black"
-          fontSize={fontSize}
-          className="select-none"
-        >
-          {label}
-        </text>
-      )}
+      <TextElement />
     </svg>
   );
 }

@@ -22,7 +22,6 @@ export default function ModelDashboard() {
   }).forEach(([key, field]) => {
     initialValues[key] = field.default ?? "";
   });
-  console.log(initialValues);
 
   // Initialize state for all form variables
   const [form, setForm] = useState(initialValues);
@@ -37,7 +36,7 @@ export default function ModelDashboard() {
       {/* Content Area: Horizontal split below header */}
       <div className="flex h-0 flex-grow">
         {/* Visualization */}
-        <div className="flex w-3/5 flex-col gap-3 px-3">
+        <div className="flex flex-1 flex-col gap-3 px-3">
           <div className="space-y-2">
             <h2 className="mb-4 border-b-2 border-gray-300 text-lg font-semibold">
               Visualization
@@ -70,6 +69,7 @@ export default function ModelDashboard() {
                 {currentModel === "perceptron" ? (
                   <Perceptron
                     activationFunction={form["activationFunction"] as string}
+                    inputCount={currentDataset ? currentDataset.X[0].length : 1}
                   />
                 ) : (
                   <div className="flex flex-1 items-center justify-center">
@@ -102,7 +102,7 @@ export default function ModelDashboard() {
                             : []
                         }
                         height={200}
-                        width={400}
+                        width={350}
                         padding={0.1}
                         margin={{
                           left: 45,
@@ -117,10 +117,43 @@ export default function ModelDashboard() {
                   </div>
                 </div>
 
-                {/* Loss Curve */}
+                {/* Weight Component Curve */}
+                <div className="flex flex-1 flex-shrink-0 flex-col rounded-md bg-gray-100">
+                  <h3 className="w-full rounded-t-md bg-orange-300 px-2 py-1 text-sm font-semibold">
+                    Weight Component Curve
+                  </h3>
+                  <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-orange-100 p-2 text-xs text-gray-600">
+                    {currentDataset ? (
+                      <LossLinePlot
+                        data={Array.from(
+                          { length: form["epochs"] as number },
+                          (_, i) => {
+                            return {
+                              epoch: i + 1,
+                              loss: Math.exp(-i + 2),
+                            };
+                          },
+                        )}
+                        height={200}
+                        width={350}
+                        margin={{
+                          left: 45,
+                          bottom: 35,
+                        }}
+                        padding={0.2}
+                      />
+                    ) : (
+                      <p className="text-[10pt] text-orange-500">
+                        Waiting for dataset to be generated.
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Loss & Accuracy Curve */}
                 <div className="flex flex-1 flex-shrink-0 flex-col rounded-md bg-gray-100">
                   <h3 className="w-full rounded-t-md bg-red-300 px-2 py-1 text-sm font-semibold">
-                    Loss Curve
+                    Loss & Accuracy Curve
                   </h3>
                   <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-red-100 p-2 text-xs text-gray-600">
                     {currentDataset ? (
@@ -129,13 +162,13 @@ export default function ModelDashboard() {
                           { length: form["epochs"] as number },
                           (_, i) => {
                             return {
-                              epoch: i,
+                              epoch: i + 1,
                               loss: Math.exp(-i + 2),
                             };
                           },
                         )}
                         height={200}
-                        width={400}
+                        width={350}
                         margin={{
                           left: 45,
                           bottom: 35,
@@ -153,7 +186,7 @@ export default function ModelDashboard() {
             </div>
 
             {/* Right Column: Training Logs (maintains full height of its parent row) */}
-            <div className="flex w-[200px] flex-col rounded-md bg-gray-100">
+            <div className="flex w-[250px] flex-col rounded-md bg-gray-100">
               <h3 className="w-full rounded-t-md bg-gray-300 px-2 py-1 text-sm font-semibold">
                 Training Logs
               </h3>
@@ -163,7 +196,7 @@ export default function ModelDashboard() {
         </div>
 
         {/* Controls */}
-        <div className="flex h-full w-2/5 flex-col space-y-10 overflow-y-auto px-3 pb-2">
+        <div className="flex h-full w-[400px] flex-col space-y-10 overflow-y-auto px-3 pb-2">
           {currentModel ? (
             <ModelForm
               initialization={models[currentModel].initialization}
