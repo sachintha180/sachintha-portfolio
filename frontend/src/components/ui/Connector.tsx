@@ -10,7 +10,7 @@ type ConnectorProps = {
   to?: Side;
   label?: string;
   fontSize: number;
-  inputCount?: number; // Used to trigger re-rendering for input connectors
+  inputCount?: number; // Used to trigger re-rendering of input connectors
 };
 
 const LABEL_Y_OFFSET = 10;

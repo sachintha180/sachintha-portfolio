@@ -55,6 +55,8 @@ export type LossPoint = {
 };
 
 export type Dataset = {
-  X: number[][];
-  y: number[];
+  X_train: number[][];
+  y_train: number[];
+  X_test: number[][];
+  y_test: number[];
 };

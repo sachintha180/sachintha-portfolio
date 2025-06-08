@@ -18,8 +18,16 @@ export const models: ModelDictionary = {
         label: "Number of Points",
         type: "number",
         min: 10,
-        max: 500,
+        max: 200,
         default: 100,
+      },
+      testTrainSplit: {
+        label: "Test-Train Split",
+        type: "number",
+        min: 0.1,
+        max: 0.9,
+        default: 0.8,
+        step: 0.1,
       },
     },
     hyperparameters: {

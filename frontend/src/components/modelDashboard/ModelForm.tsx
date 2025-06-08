@@ -45,6 +45,7 @@ export default function ModelForm({
     const payload = {
       dataset: form.dataset, // 'dataset' key from initialization in model.tsx
       n: Number(form.numberOfPoints), // 'numberOfPoints' key
+      testTrainSplit: Number(form.testTrainSplit), // 'testTrainSplit' key
     };
 
     try {
@@ -71,7 +72,12 @@ export default function ModelForm({
         type: "success",
         message: "Dataset generated successfully",
       });
-      setCurrentDataset({ X: result.X, y: result.y });
+      setCurrentDataset({
+        X_train: result.X_train,
+        y_train: result.y_train,
+        X_test: result.X_test,
+        y_test: result.y_train,
+      });
     } catch (err) {
       if (err instanceof Error) {
         console.error("Failed to generate dataset:", err.message);
