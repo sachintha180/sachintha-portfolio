@@ -59,4 +59,5 @@ export type Dataset = {
   y_train: number[];
   X_test: number[][];
   y_test: number[];
+  X_dims: number[];
 };

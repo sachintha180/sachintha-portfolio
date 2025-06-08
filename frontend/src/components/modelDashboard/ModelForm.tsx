@@ -49,6 +49,7 @@ export default function ModelForm({
     };
 
     try {
+      // Send request to API endpoint
       const response = await fetch("http://localhost:5000/api/generate", {
         method: "POST",
         headers: {
@@ -57,8 +58,8 @@ export default function ModelForm({
         body: JSON.stringify(payload),
       });
 
+      // Parse and validate response
       const result = await response.json();
-
       if (!response.ok) {
         throw new Error(
           result.error || `HTTP error! status: ${response.status}`,
@@ -68,15 +69,19 @@ export default function ModelForm({
         throw new Error(result.error);
       }
 
+      // Show toast message indicating successful data generation
       showToast({
         type: "success",
         message: "Dataset generated successfully",
       });
+
+      // Update current dataset state
       setCurrentDataset({
         X_train: result.X_train,
         y_train: result.y_train,
         X_test: result.X_test,
         y_test: result.y_train,
+        X_dims: result.X_dims,
       });
     } catch (err) {
       if (err instanceof Error) {

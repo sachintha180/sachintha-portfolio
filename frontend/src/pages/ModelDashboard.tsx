@@ -69,7 +69,7 @@ export default function ModelDashboard() {
                 {currentModel === "perceptron" ? (
                   <Perceptron
                     activationFunction={form["activationFunction"] as string}
-                    inputCount={currentDataset ? currentDataset.X[0].length : 1}
+                    inputCount={currentDataset ? currentDataset.X_dims[1] : 1}
                   />
                 ) : (
                   <div className="flex flex-1 items-center justify-center">
@@ -92,11 +92,11 @@ export default function ModelDashboard() {
                       <ScatterPlot
                         data={
                           currentDataset
-                            ? currentDataset.X.map((x, i) => {
+                            ? currentDataset.X_train.map((x, i) => {
                                 return {
                                   x1: x[0],
                                   x2: x[1],
-                                  label: currentDataset.y[i],
+                                  label: currentDataset.y_train[i],
                                 };
                               })
                             : []

@@ -7,7 +7,7 @@ from flask.cli import load_dotenv
 from flask_cors import CORS
 from flask_session import Session
 
-from backend.data_response import GeneratorResponse
+from data_response import GeneratorResponse
 from data_generator import AndGenerator
 from validation import validate_generate_request
 
