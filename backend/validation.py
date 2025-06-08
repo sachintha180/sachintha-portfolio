@@ -1,8 +1,6 @@
 """Validation functions for API requests."""
 
-from flask import jsonify
-
-from backend.data_response import GeneratorResponse
+from data_response import GeneratorResponse
 
 MAX_N_VALUE = 200
 MIN_TEST_TRAIN_SPLIT_VALUE = 0.1

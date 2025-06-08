@@ -2,7 +2,7 @@
 
 import logging
 import os
-from flask import Flask, jsonify, request, session
+from flask import Flask, request, session
 from flask.cli import load_dotenv
 from flask_cors import CORS
 from flask_session import Session
