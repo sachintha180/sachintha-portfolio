@@ -4,7 +4,7 @@ export const models: ModelDictionary = {
   perceptron: {
     label: "Perceptron",
     initialization: {
-      dataset: {
+      datasetType: {
         label: "Dataset",
         type: "select",
         options: [
@@ -31,27 +31,12 @@ export const models: ModelDictionary = {
       },
     },
     hyperparameters: {
-      activationFunction: {
-        label: "Activation Function",
-        type: "select",
-        options: [
-          { value: "sigmoid", label: "Sigmoid" },
-          { value: "relu", label: "ReLU" },
-        ],
-        default: "sigmoid",
-      },
       learningRate: {
         label: "Learning Rate",
         type: "number",
         step: 0.01,
+        min: 0.01,
         default: 0.1,
-      },
-      epochs: {
-        label: "Epochs",
-        type: "number",
-        min: 1,
-        max: 1000,
-        default: 10,
       },
     },
   },

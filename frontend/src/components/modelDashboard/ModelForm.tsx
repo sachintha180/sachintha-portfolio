@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { Dataset, ModelOptionGroup } from "../../types/Model";
+import type { Dataset, ModelOptionGroup, TrainItem } from "../../types/Model";
 import { useToast } from "../../contexts/ToastContext";
 
 type ModelFormProps = {
@@ -9,7 +9,11 @@ type ModelFormProps = {
   setForm: React.Dispatch<
     React.SetStateAction<Record<string, string | number>>
   >;
+  currentModel: string;
   setCurrentDataset: React.Dispatch<React.SetStateAction<Dataset | null>>;
+  setCurrentTraining: React.Dispatch<React.SetStateAction<TrainItem[]>>;
+  setIsStepLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsBatchLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function ModelForm({
@@ -17,7 +21,11 @@ export default function ModelForm({
   hyperparameters,
   form,
   setForm,
+  currentModel,
   setCurrentDataset,
+  setCurrentTraining,
+  setIsStepLoading,
+  setIsBatchLoading,
 }: ModelFormProps) {
   // Initialize loading state variable
   const [isLoading, setIsLoading] = useState(false);
@@ -37,24 +45,28 @@ export default function ModelForm({
   };
 
   // Event handler for submitting the form to generate dataset
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleGenerateDataset = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     e.preventDefault();
     setIsLoading(true);
     setCurrentDataset(null);
 
     const payload = {
-      dataset: form.dataset, // 'dataset' key from initialization in model.tsx
-      n: Number(form.numberOfPoints), // 'numberOfPoints' key
-      testTrainSplit: Number(form.testTrainSplit), // 'testTrainSplit' key
+      model: currentModel,
+      datasetType: form.datasetType,
+      numberOfPoints: Number(form.numberOfPoints),
+      testTrainSplit: Number(form.testTrainSplit),
     };
 
     try {
       // Send request to API endpoint
-      const response = await fetch("http://localhost:5000/api/generate", {
+      const response = await fetch("http://localhost:5000/api/data/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
@@ -69,12 +81,6 @@ export default function ModelForm({
         throw new Error(result.error);
       }
 
-      // Show toast message indicating successful data generation
-      showToast({
-        type: "success",
-        message: "Dataset generated successfully",
-      });
-
       // Update current dataset state
       setCurrentDataset({
         X_train: result.X_train,
@@ -83,6 +89,13 @@ export default function ModelForm({
         y_test: result.y_train,
         X_dims: result.X_dims,
       });
+
+      // Allow for normal control buttons
+      setIsBatchLoading(false);
+      setIsStepLoading(false);
+
+      // Clear all training
+      setCurrentTraining([]);
     } catch (err) {
       if (err instanceof Error) {
         console.error("Failed to generate dataset:", err.message);
@@ -173,9 +186,9 @@ export default function ModelForm({
         })}
 
         <button
-          onClick={handleSubmit}
+          onClick={handleGenerateDataset}
           disabled={isLoading}
-          className="mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+          className={`mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700 disabled:opacity-50 ${isLoading && "pointer-events-none"}`}
         >
           {isLoading ? "Generating..." : "Generate Dataset"}
         </button>

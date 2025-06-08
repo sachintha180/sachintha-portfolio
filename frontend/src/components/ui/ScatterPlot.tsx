@@ -11,6 +11,11 @@ type ScatterPlotProps = {
     bottom: number;
   };
   padding?: number;
+  boundary?: {
+    w1: number;
+    w2: number;
+    b: number;
+  };
 };
 
 export default function ScatterPlot({
@@ -22,6 +27,7 @@ export default function ScatterPlot({
     bottom: 35,
   },
   padding = 1,
+  boundary,
 }: ScatterPlotProps) {
   // Initialize reference to the SVG element
   const ref = useRef<SVGSVGElement>(null);
@@ -107,6 +113,28 @@ export default function ScatterPlot({
       .attr("baseline-shift", "sub")
       .attr("font-size", "75%")
       .text("2");
+
+    // Plot decision boundary
+    if (boundary) {
+      const xStart = xScale.domain()[0];
+      const xEnd = xScale.domain()[1];
+
+      const m = -(boundary.w2 / boundary.w1);
+      const c = -boundary.b / boundary.w1;
+
+      const yStart = m * xStart + c;
+      const yEnd = m * xEnd + c;
+
+      svgElement
+        .append("line")
+        .attr("x1", xScale(xStart))
+        .attr("y1", yScale(yStart))
+        .attr("x2", xScale(xEnd))
+        .attr("y2", yScale(yEnd))
+        .attr("stroke", "#111")
+        .attr("stroke-dasharray", "4 2")
+        .attr("stroke-width", 1.5);
+    }
   }, [data, width, height, margin]);
 
   return <svg ref={ref} width={width} height={height} className="font-math" />;

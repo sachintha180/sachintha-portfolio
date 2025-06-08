@@ -29,13 +29,19 @@ type StringModelOption = BaseModelOption & {
 
 type ModelOption = SelectModelOption | NumberModelOption | StringModelOption;
 
+type InitializationOptions = {
+  datasetType: SelectModelOption;
+  numberOfPoints: NumberModelOption;
+  testTrainSplit: NumberModelOption;
+};
+
 export type ModelOptionGroup = {
   [key: string]: ModelOption;
 };
 
 type ModelDefinition = {
   label: string;
-  initialization: ModelOptionGroup;
+  initialization: InitializationOptions;
   hyperparameters: ModelOptionGroup;
 };
 
@@ -49,9 +55,9 @@ export type ScatterPoint = {
   label?: number;
 };
 
-export type LossPoint = {
-  epoch: number;
-  loss: number;
+export type Point = {
+  x: number;
+  y: number;
 };
 
 export type Dataset = {
@@ -61,3 +67,16 @@ export type Dataset = {
   y_test: number[];
   X_dims: number[];
 };
+
+export type PerceptronTrainItem = {
+  z: number;
+  w: number[];
+  b: number;
+  y_hat: number;
+  idx: number;
+  x_i: number[];
+  y_i: number;
+  accuracy: number;
+};
+
+export type TrainItem = PerceptronTrainItem;

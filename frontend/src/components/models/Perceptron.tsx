@@ -1,16 +1,16 @@
-import {
-  createRef,
-  useMemo,
-  useRef,
-  type ReactNode,
-  type RefObject,
-} from "react";
+import { createRef, useMemo, useRef, type RefObject } from "react";
 import Connector from "../ui/Connector";
 
 // Perceptron props
 type PerceptronProps = {
-  activationFunction: string;
   inputCount: number;
+  labels?: {
+    x: string[];
+    w: string[];
+    b: string;
+    z: string;
+    y_hat: string;
+  };
 };
 
 // Configuration for Perceptron component styling
@@ -19,14 +19,11 @@ const perceptronConfig = {
   neuronPadding: 50,
 };
 
-export default function Perceptron({
-  activationFunction,
-  inputCount,
-}: PerceptronProps) {
+export default function Perceptron({ inputCount, labels }: PerceptronProps) {
   // Initialize refs to model components
   const biasRef = useRef<HTMLDivElement>(null);
   const sumRef = useRef<HTMLDivElement>(null);
-  const activationRef = useRef<HTMLDivElement>(null);
+  const stepRef = useRef<HTMLDivElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
 
   // Initialize an array of input refs
@@ -43,12 +40,6 @@ export default function Perceptron({
   // Initialize ref to main container (for connectors)
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Initialize maps of symbols for possible activation functions
-  const activationFunctionMap: Record<string, ReactNode> = {
-    sigmoid: <span>&sigma;</span>,
-    relu: <span>ReLU</span>,
-  };
-
   return (
     <div ref={containerRef} className="font-math relative flex-1">
       <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-20">
@@ -64,7 +55,13 @@ export default function Perceptron({
               }}
             >
               <p>
-                x<sub>{i + 1}</sub>
+                {labels ? (
+                  labels.x[i]
+                ) : (
+                  <>
+                    x<sub>{i + 1}</sub>
+                  </>
+                )}
               </p>
             </div>
           ))}
@@ -86,7 +83,7 @@ export default function Perceptron({
               fontSize: perceptronConfig.neuronPadding / 3,
             }}
           >
-            <p>b</p>
+            <p>{labels ? labels.b : "b"}</p>
           </div>
 
           <div className="flex w-full items-center justify-between gap-4 p-4">
@@ -112,9 +109,9 @@ export default function Perceptron({
               </p>
             </div>
 
-            {/* Activation Function */}
+            {/* Step Function */}
             <div
-              ref={activationRef}
+              ref={stepRef}
               className="flex items-center justify-center rounded-full border-2 border-blue-400 bg-blue-300"
               style={{
                 height:
@@ -130,8 +127,7 @@ export default function Perceptron({
                   fontSize: perceptronConfig.neuronPadding / 3,
                 }}
               >
-                {activationFunctionMap[activationFunction] ??
-                  activationFunction}
+                &phi;(z)
               </p>
             </div>
           </div>
@@ -145,20 +141,20 @@ export default function Perceptron({
             fontSize: perceptronConfig.neuronPadding / 3,
           }}
         >
-          <p>y</p>
+          {labels ? labels.y_hat : <p>y&#770;</p>}
         </div>
       </div>
 
-      {/* Input-Sum Connectors */}
+      {/* Weight Connectors */}
       {Array.from({ length: inputCount }).map((_, i) => (
         <Connector
-          key={`input-sum-connector-${i}`}
+          key={`weight-connector-${i}`}
           containerRef={containerRef}
           refA={inputRefs.current[i]}
           refB={sumRef}
           from="right"
           to="left"
-          label={`w${i + 1}`}
+          label={labels ? labels.w[i] : `w${i + 1}`}
           fontSize={perceptronConfig.neuronPadding / 3}
           inputCount={inputCount}
         />
@@ -174,21 +170,21 @@ export default function Perceptron({
         fontSize={perceptronConfig.neuronPadding / 3}
       />
 
-      {/* Sum-Activation Connector */}
+      {/* Sum-Step Connector */}
       <Connector
         containerRef={containerRef}
         refA={sumRef}
-        refB={activationRef}
+        refB={stepRef}
         from="right"
         to="left"
-        label="z"
+        label={labels ? labels.z : "z"}
         fontSize={perceptronConfig.neuronPadding / 3}
       />
 
-      {/* Activation-Output Connector */}
+      {/* Step-Output Connector */}
       <Connector
         containerRef={containerRef}
-        refA={activationRef}
+        refA={stepRef}
         refB={outputRef}
         from="right"
         to="left"

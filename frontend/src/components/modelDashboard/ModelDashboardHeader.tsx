@@ -1,6 +1,12 @@
-import { FaPlay, FaQuestion, FaStepForward, FaUndo } from "react-icons/fa";
+import type { ReactNode } from "react";
 
-export default function ModelDashboardHeader() {
+type ModelDashboardHeaderProps = {
+  children: ReactNode;
+};
+
+export default function ModelDashboardHeader({
+  children,
+}: ModelDashboardHeaderProps) {
   return (
     <header className="mb-10 flex max-h-[250px] w-full rounded-sm">
       {/* Gradient Border Container */}
@@ -16,28 +22,11 @@ export default function ModelDashboardHeader() {
               Interactive ML Visualization
             </p>
           </div>
-
-          {/* Control Buttons */}
-          <div className="flex gap-3">
-            <button className="flex h-20 min-w-20 flex-col items-center justify-center gap-2 rounded-md bg-green-600 pt-1 text-white hover:bg-green-700">
-              <FaPlay size={20} />
-              <span className="text-sm">Train</span>
-            </button>
-            <button className="flex h-20 min-w-20 flex-col items-center justify-center gap-2 rounded-md bg-amber-600 pt-1 text-white hover:bg-amber-700">
-              <FaStepForward size={20} />
-              <span className="text-sm">Step</span>
-            </button>
-            <button className="flex h-20 min-w-20 flex-col items-center justify-center gap-2 rounded-md bg-red-600 pt-1 text-white hover:bg-red-700">
-              <FaUndo size={20} />
-              <span className="text-sm">Reset</span>
-            </button>
-            <button className="flex h-20 min-w-20 flex-col items-center justify-center gap-2 rounded-md bg-blue-600 pt-1 text-white hover:bg-blue-700">
-              <FaQuestion size={20} />
-              <span className="text-sm">Query</span>
-            </button>
-          </div>
         </div>
       </div>
+
+      {/* Children (for Control Buttons) */}
+      {children}
     </header>
   );
 }

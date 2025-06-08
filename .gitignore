@@ -19,3 +19,6 @@ instance/
 
 # Xournal Files
 *.xopp
+
+# Flask Session
+flask_session/

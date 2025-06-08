@@ -1,6 +1,5 @@
-"""Validation functions for API requests."""
+from api_response import GeneratorResponse
 
-from data_response import GeneratorResponse
 
 MAX_N_VALUE = 200
 MIN_TEST_TRAIN_SPLIT_VALUE = 0.1
@@ -8,10 +7,6 @@ MAX_TEST_TRAIN_SPLIT_VALUE = 0.9
 
 
 def validate_generate_request(request_data, logger):
-    """
-    Validates the data for the /api/generate endpoint.
-    """
-
     def _fail(msg):
         logger.error(msg)
         return False, None, GeneratorResponse.error(message=msg)
@@ -20,12 +15,16 @@ def validate_generate_request(request_data, logger):
     if not request_data:
         return _fail("Request body must be JSON or is empty")
 
-    dataset = request_data.get("dataset")
-    n_value = request_data.get("n")
+    model = request_data.get("model")
+    dataset_type = request_data.get("datasetType")
+    n_value = request_data.get("numberOfPoints")
     test_train_split = request_data.get("testTrainSplit")
 
-    if not dataset:
-        return _fail("'dataset' attribute is missing")
+    if not model:
+        return _fail("'model' attribute is missing")
+
+    if not dataset_type:
+        return _fail("'datasetType' attribute is missing")
 
     if n_value is None:
         return _fail("'n' attribute is missing")
@@ -49,6 +48,11 @@ def validate_generate_request(request_data, logger):
 
     return (
         True,
-        {"dataset": dataset, "n": n_value, "test_train_split": test_train_split},
+        {
+            "model": model,
+            "dataset_type": dataset_type,
+            "n": n_value,
+            "test_train_split": test_train_split,
+        },
         None,
     )
