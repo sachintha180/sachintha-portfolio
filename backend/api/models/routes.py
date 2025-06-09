@@ -70,7 +70,7 @@ def train():
         # Step through the next training example
         if idx >= dataset["X_dims"][0]:
             return PerceptronTrainResponse.error(
-                message="All training examples have been processed."
+                message="All training examples have been processed"
             )
 
         # Obtain the current training example

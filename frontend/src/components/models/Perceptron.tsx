@@ -49,12 +49,12 @@ export default function Perceptron({ inputCount, labels }: PerceptronProps) {
             <div
               key={`input-${i}`}
               ref={inputRefs.current[i]}
-              className="p-3"
+              className="min-w-20 p-3"
               style={{
                 fontSize: perceptronConfig.neuronPadding / 3,
               }}
             >
-              <p>
+              <p className="text-right">
                 {labels ? (
                   labels.x[i]
                 ) : (
@@ -78,7 +78,7 @@ export default function Perceptron({ inputCount, labels }: PerceptronProps) {
           {/* Bias */}
           <div
             ref={biasRef}
-            className="p-2"
+            className="min-w-20 p-2"
             style={{
               fontSize: perceptronConfig.neuronPadding / 3,
             }}
@@ -136,7 +136,7 @@ export default function Perceptron({ inputCount, labels }: PerceptronProps) {
         {/* Output */}
         <div
           ref={outputRef}
-          className="p-3"
+          className="min-w-20 p-3"
           style={{
             fontSize: perceptronConfig.neuronPadding / 3,
           }}
