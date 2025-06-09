@@ -1,8 +1,8 @@
 import type { Experiment } from "../../types/Experiment";
 
-interface ExperimentCardProps {
+type ExperimentCardProps = {
   experiment: Experiment;
-}
+};
 
 export default function ExperimentCard({ experiment }: ExperimentCardProps) {
   return (

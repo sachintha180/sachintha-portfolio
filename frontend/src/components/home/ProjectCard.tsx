@@ -1,8 +1,8 @@
 import type { Project } from "../../types/Project";
 
-interface ProjectCardProps {
+type ProjectCardProps = {
   project: Project;
-}
+};
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
