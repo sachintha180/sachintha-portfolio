@@ -6,8 +6,7 @@ build/
 .next/
 
 # Python (Flask)
-env/
-env/
+.venv/
 __pycache__/
 *.pyc
 instance/

@@ -1,14 +1,17 @@
 import logging
 import os
-from flask import Flask
+from flask import Flask, send_from_directory
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_session import Session
 from api.data import data_bp
 from api.models import models_bp
+from typing import cast
 
-# Initialize app and register all blueprints
-app = Flask(__name__)
+# Initialize app with static files (from React)
+app = Flask(__name__, static_folder="../frontend/dist")
+
+# Register all blueprints
 app.register_blueprint(data_bp)
 app.register_blueprint(models_bp)
 
@@ -19,8 +22,16 @@ CORS(app, supports_credentials=True)
 load_dotenv(".env.local")
 
 # Configure app parameters
-app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY")
-app.config["SESSION_TYPE"] = os.getenv("FLASK_SESSION_TYPE")
+secret_key = os.getenv("FLASK_SECRET_KEY")
+session_type = os.getenv("FLASK_SESSION_TYPE")
+
+if not secret_key or not session_type:
+    raise RuntimeError(
+        "Missing required environment variables: FLASK_SECRET_KEY and/or FLASK_SESSION_TYPE"
+    )
+
+app.config["SECRET_KEY"] = secret_key
+app.config["SESSION_TYPE"] = session_type
 
 # Initialize session for app
 Session(app)
@@ -29,11 +40,18 @@ Session(app)
 logging.basicConfig(level=logging.INFO)
 
 
-# Initialize base route
-@app.route("/", methods=["GET"])
-def index():
-    return "Model Dashboard Flask API"
+# Serve React static files
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_react_app(path: str):
+    static_folder = cast(str, app.static_folder)
+    full_path = os.path.join(static_folder, path)
+    if path != "" and os.path.exists(full_path) and not os.path.isdir(full_path):
+        return send_from_directory(static_folder, path)
+    else:
+        return send_from_directory(static_folder, "index.html")
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # In production, use a WSGI server like gunicorn or waitress
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=False)

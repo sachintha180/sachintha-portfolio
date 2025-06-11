@@ -60,7 +60,7 @@ export default function ModelDashboard() {
 
     try {
       // Send request to API endpoint
-      const response = await fetch("http://localhost:5000/api/models/train", {
+      const response = await fetch("/api/models/train", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +132,7 @@ export default function ModelDashboard() {
     const trainOnce = async () => {
       try {
         // Send request to API endpoint
-        const response = await fetch("http://localhost:5000/api/models/train", {
+        const response = await fetch("/api/models/train", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -212,7 +212,7 @@ export default function ModelDashboard() {
   }
 
   return (
-    <div className="font-title relative flex h-screen w-screen flex-col overflow-hidden p-5">
+    <div className="font-title relative flex h-screen w-screen flex-col overflow-y-auto p-5">
       {/* Header - fixed height */}
       <div className="h-[150px] flex-shrink-0">
         <ModelDashboardHeader>
@@ -259,8 +259,13 @@ export default function ModelDashboard() {
         </ModelDashboardHeader>
       </div>
 
+      {/* Small Screen Message */}
+      <div className="flex flex-1 items-center justify-center px-3 text-lg text-gray-500 xl:hidden">
+        <p>Sorry, this model doesn't support screen sizes below 1280px.</p>
+      </div>
+
       {/* Content Area: Horizontal split below header */}
-      <div className="flex h-0 flex-grow">
+      <div className="hidden h-0 flex-grow xl:flex">
         {/* Visualization */}
         <div className="flex flex-1 flex-col gap-3 px-3">
           <div className="space-y-2">
@@ -291,7 +296,7 @@ export default function ModelDashboard() {
             {/* Left Column: Model Visualization and Plots */}
             <div className="flex flex-1 flex-col gap-3">
               {/* Upper part: Model Visualization */}
-              <div className="flex min-h-0 flex-1">
+              <div className="flex min-h-[300px] flex-1">
                 {currentModel === "perceptron" ? (
                   <Perceptron
                     inputCount={currentDataset ? currentDataset.X_dims[1] : 1}
@@ -314,7 +319,7 @@ export default function ModelDashboard() {
                     Training Dataset Plot{" "}
                     {currentDataset && `(n = ${currentDataset.X_dims[0]})`}
                   </h3>
-                  <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-green-100 p-2 text-xs text-gray-600">
+                  <div className="flex min-w-[350px] flex-1 items-center justify-center overflow-y-auto rounded-md bg-green-100 p-2 text-xs text-gray-600">
                     {currentDataset ? (
                       <ScatterPlot
                         data={
@@ -338,7 +343,7 @@ export default function ModelDashboard() {
                         boundary={boundaryValues || undefined}
                       />
                     ) : (
-                      <p className="text-[10pt] text-green-500">
+                      <p className="text-center text-[10pt] text-green-500">
                         Waiting for dataset to be generated.
                       </p>
                     )}
@@ -348,11 +353,11 @@ export default function ModelDashboard() {
                 {/* Weight & Bias Component Curve */}
                 <div className="flex flex-1 flex-shrink-0 flex-col rounded-md bg-gray-100">
                   <h3 className="w-full rounded-t-md bg-orange-300 px-2 py-1 text-sm font-semibold">
-                    Weight & Bias Component Curve{" "}
+                    W&B Component Curve{" "}
                     {currentTraining.length > 0 &&
                       `(i = ${currentTraining.length})`}
                   </h3>
-                  <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-orange-100 p-2 text-xs text-gray-600">
+                  <div className="flex min-w-[350px] flex-1 items-center justify-center overflow-y-auto rounded-md bg-orange-100 p-2 text-xs text-gray-600">
                     {currentDataset && currentTraining.length ? (
                       <LinePlot
                         data={wbLineData}
@@ -371,7 +376,7 @@ export default function ModelDashboard() {
                         padding={0.2}
                       />
                     ) : (
-                      <p className="text-[10pt] text-orange-500">
+                      <p className="text-center text-[10pt] text-orange-500">
                         Waiting for at least one training step.
                       </p>
                     )}
@@ -385,7 +390,7 @@ export default function ModelDashboard() {
                     {currentTraining.length > 0 &&
                       `(i = ${currentTraining.length})`}
                   </h3>
-                  <div className="flex flex-1 items-center justify-center overflow-y-auto rounded-md bg-red-100 p-2 text-xs text-gray-600">
+                  <div className="flex min-w-[350px] flex-1 items-center justify-center overflow-y-auto rounded-md bg-red-100 p-2 text-xs text-gray-600">
                     {currentDataset && currentTraining.length ? (
                       <LinePlot
                         data={accuracyLineData}
@@ -403,7 +408,7 @@ export default function ModelDashboard() {
                         padding={1}
                       />
                     ) : (
-                      <p className="text-[10pt] text-red-500">
+                      <p className="text-center text-[10pt] text-red-500">
                         Waiting for at least one training step.
                       </p>
                     )}
@@ -413,7 +418,7 @@ export default function ModelDashboard() {
             </div>
 
             {/* Right Column: Training Logs (maintains full height of its parent row) */}
-            <div className="flex w-[250px] flex-col rounded-md bg-gray-100">
+            <div className="hidden w-[250px] flex-col rounded-md bg-gray-100 min-[1700px]:flex">
               <h3 className="w-full rounded-t-md bg-gray-300 px-2 py-1 text-sm font-semibold">
                 Training Logs
               </h3>

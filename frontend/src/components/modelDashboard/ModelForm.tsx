@@ -61,7 +61,7 @@ export default function ModelForm({
 
     try {
       // Send request to API endpoint
-      const response = await fetch("http://localhost:5000/api/data/generate", {
+      const response = await fetch("/api/data/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
