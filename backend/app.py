@@ -54,4 +54,4 @@ def serve_react_app(path: str):
 
 if __name__ == "__main__":
     # In production, use a WSGI server like gunicorn or waitress
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)), debug=False)
+    app.run(host="0.0.0.0", port=int(os.getenv("FLASK_PORT", 80)), debug=False)

@@ -34,4 +34,4 @@ COPY --from=build-stage /app/frontend/dist ../frontend/dist
 EXPOSE 5000
 
 # Start Flask
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=80"]
