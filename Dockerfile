@@ -1,5 +1,5 @@
 # Use a base image with Node.js for building the React app
-FROM node:16 as build-stage
+FROM node:22 AS build-stage
 
 # Set the working directory
 WORKDIR /app/frontend
@@ -13,20 +13,25 @@ COPY frontend ./
 RUN npm run build
 
 # Use a clean base Python image for the final image
-FROM python:3.11-slim as production-stage
+FROM python:3.11-slim AS production-stage
 
-# Reset the working directory
-WORKDIR /app
+# Set the working directory to the location of app.py
+WORKDIR /app/backend
 
 # Copy backend requirements and install them
-COPY backend/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/requirements.txt ../
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade setuptools
+RUN python3 -m pip install --no-cache-dir -v -r ../requirements.txt
 
 # Copy the Flask backend code
-COPY backend /app/backend
+COPY backend/ .
+
+# Copy the built React files into the location expected by Flask
+COPY --from=build-stage /app/frontend/dist ../frontend/dist
 
 # Expose the port that Flask will use
 EXPOSE 5000
 
 # Start Flask
-CMD ["flask", "run"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
