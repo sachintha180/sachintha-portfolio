@@ -7,4 +7,5 @@ env
 app/*.log
 instance
 *.env
+*.env.local
 .DS_Store
