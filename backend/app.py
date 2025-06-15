@@ -1,12 +1,11 @@
 import logging
 import os
-from flask import Flask, send_from_directory
+from flask import Flask
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_session import Session
 from api.data import data_bp
 from api.models import models_bp
-from typing import cast
 
 # Initialize app
 app = Flask(__name__)

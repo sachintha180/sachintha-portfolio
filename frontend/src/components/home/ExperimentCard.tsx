@@ -20,7 +20,6 @@ export default function ExperimentCard({ experiment }: ExperimentCardProps) {
       {/* Link */}
       <a
         href={experiment.link}
-        target="_blank"
         rel="noopener noreferrer"
         className="ml-auto inline-flex items-center font-medium text-blue-600 transition-colors duration-300 hover:text-blue-800"
       >

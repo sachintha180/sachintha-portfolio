@@ -21,7 +21,7 @@ FROM nginx:alpine
 COPY --from=build-stage /app/frontend/dist /usr/share/nginx/html
 
 # Copy the nginx configuration file
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80 (default) for public access
 EXPOSE 80
