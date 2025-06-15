@@ -1,5 +1,5 @@
 # Stage 1: Build Phase
-FROM node:22 as build-stage
+FROM node:22 AS build-stage
 
 # Set the working directory to the location of index.html
 WORKDIR /app/frontend

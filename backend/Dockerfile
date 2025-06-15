@@ -1,5 +1,5 @@
 # Use a clean base Python image for the final image
-FROM python:3.11-slim as production-stage
+FROM python:3.11-slim AS production-stage
 
 # Set the working directory to the location of app.py
 WORKDIR /app/backend
