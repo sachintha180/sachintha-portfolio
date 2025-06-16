@@ -1,10 +1,7 @@
-__pycache__
-*.pyc
-*.pyo
-*.pyd
-venv
-env
-app/*.log
-instance
-*.env
+node_modules/
+dist/
+.vite/
+.env*
 .DS_Store
+*.log
+*.cache

@@ -1,18 +1,32 @@
 services:
   frontend:
-    image: frontend-image
+    image: "frontend-image"
     build:
       context: ./frontend
     ports:
-      - "3000:80" # Expose the frontend on port 3000 (container port 80)
+      - "3000:80"
+    env_file:
+      - ./frontend/.env.production
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-net
 
   backend:
-    image: backend-image
+    image: "backend-image"
     build:
       context: ./backend
     ports:
-      - "5000:80" # Expose the backend on port 5000 (container port 80)
+      - "5000:80"
     depends_on:
       - frontend
     env_file:
-      - ./backend/.env.local
+      - ./backend/.env.production
+    environment:
+      - FLASK_ENV=production
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge

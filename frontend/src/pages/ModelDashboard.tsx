@@ -60,14 +60,17 @@ export default function ModelDashboard() {
 
     try {
       // Send request to API endpoint
-      const response = await fetch("/api/models/train", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/models/train`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(payload),
         },
-        credentials: "include",
-        body: JSON.stringify(payload),
-      });
+      );
 
       // Parse and validate response
       const result = await response.json();
@@ -132,14 +135,17 @@ export default function ModelDashboard() {
     const trainOnce = async () => {
       try {
         // Send request to API endpoint
-        const response = await fetch("/api/models/train", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/models/train`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(payload),
           },
-          credentials: "include",
-          body: JSON.stringify(payload),
-        });
+        );
 
         // Parse and validate response
         const result = await response.json();
