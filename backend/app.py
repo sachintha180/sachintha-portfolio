@@ -1,11 +1,14 @@
 import logging
-import os
 from flask import Flask
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_session import Session
 from api.data import data_bp
 from api.models import models_bp
+from utils import validate_env_variables
+
+# Load environment variables
+load_dotenv(".env.local")
 
 # Initialize app
 app = Flask(__name__)
@@ -14,25 +17,17 @@ app = Flask(__name__)
 app.register_blueprint(data_bp)
 app.register_blueprint(models_bp)
 
+# Load and validate environment variables
+env_vars = validate_env_variables(
+    "FLASK_SECRET_KEY", "FLASK_SESSION_TYPE", "FLASK_PORT"
+)
+
 # Enable CORS for all routes
 CORS(app, supports_credentials=True)
 
-# Determine the environment and load the appropriate .env file
-env_file = ".env.local" if os.getenv("FLASK_ENV") != "production" else ".env.production"
-load_dotenv(env_file)
-
 # Configure app parameters
-secret_key = os.getenv("FLASK_SECRET_KEY")
-session_type = os.getenv("FLASK_SESSION_TYPE")
-flask_port = os.getenv("FLASK_PORT")
-
-if not secret_key or not session_type or not flask_port:
-    raise RuntimeError(
-        "Missing required environment variables: FLASK_SECRET_KEY, FLASK_SESSION_TYPE and FLASK_PORT"
-    )
-
-app.config["SECRET_KEY"] = secret_key
-app.config["SESSION_TYPE"] = session_type
+app.config["SECRET_KEY"] = env_vars["FLASK_SECRET_KEY"]
+app.config["SESSION_TYPE"] = env_vars["FLASK_SESSION_TYPE"]
 
 # Initialize session for app
 Session(app)
@@ -40,5 +35,6 @@ Session(app)
 # Configure basic logging
 logging.basicConfig(level=logging.INFO)
 
+# Run Flask application
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(flask_port), debug=False)
+    app.run(host="0.0.0.0", port=int(env_vars["FLASK_PORT"]), debug=False)
