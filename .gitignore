@@ -24,3 +24,6 @@ flask_session/
 # Environment variables
 .env
 .env.*
+
+# Azure Commands
+commands/

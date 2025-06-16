@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: "frontend-image"
+    image: frontend-image:latest
     build:
       context: ./frontend
     ports:
@@ -13,7 +13,7 @@ services:
       - app-net
 
   backend:
-    image: "backend-image"
+    image: backend-image:latest
     build:
       context: ./backend
     ports:
